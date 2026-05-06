@@ -170,3 +170,7 @@ We would like to thank these developers and credit their code.
 - **Votee** for providing the API and testing environment
 - [Josh Stephenson](https://github.com/joshstephenson/Wordle-Solver) for the provided statistics
 - [ChatGPT](https://chatgpt.com/share/69f860b3-80b4-83a5-bfe8-c117856d96b1) for the discussion about how to solve this problem
+
+Notes:
+
+- I have forgot the source of ```words.txt``` as it is the source file that I used before for my own **Wordle** game, so I could not cite its source here.
