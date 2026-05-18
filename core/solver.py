@@ -1,4 +1,4 @@
-
+from typing import List
 from collections import Counter, defaultdict
 
 class Solver:
@@ -31,7 +31,7 @@ class Solver:
         self.word_bank.remove(out)
         return out
 
-    def update(self, response: dict) -> bool:
+    def update(self, response: List[dict]) -> bool:
         present_letters = set()
         absent_letters = set()
         guess_counter = defaultdict(int)

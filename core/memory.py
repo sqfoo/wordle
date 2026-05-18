@@ -15,7 +15,7 @@ class Memory:
         self.present_pos = defaultdict(set)
         self.gueesed = []
 
-    def update(self, response):
+    def update(self, response: dict) -> bool:
         present_letters = set()
         absent_letters = set()
         
@@ -38,7 +38,7 @@ class Memory:
         self.invalid.update(absent_letters - present_letters)
         return all(f != '_' for f in self.correct)
 
-    def pretty_print(self):
+    def pretty_print(self) -> str:
         present_string = ""
         for pos, c in self.present_pos.items():
             present_string += PRESENT_TEMPLATE.format(c=','.join(c), pos=pos)

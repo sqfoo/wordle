@@ -1,6 +1,7 @@
-
+import time
 import argparse
-import requests, time
+import requests
+
 from core.solver import Solver
 
 MODE = {
@@ -30,9 +31,11 @@ if __name__ == "__main__":
     tgt = args.tgt.lower()
     
     for cnt in range(1, 1+6):
+        # Solver heuristically guesses the word
         response = solver.guess()
         print(f'Guess {cnt}: {response}')
         
+        # Corresponds to send the guessed word to the SERVER, and receive the FEEDBACK
         success = False
         for attempt in range(1, 1 + MAX_RETRIES):
             try:
@@ -55,14 +58,13 @@ if __name__ == "__main__":
                 wait = 2 ** attempt
                 print(f'Error: {e}, retrying in {wait}s')
                 time.sleep(wait)
-                pass
 
         if not success:
             raise RuntimeError("Failed after retries")
         
+        # Process the FEEDBACK to JSON format, and Update the Candidate Pool
         feedback = resp.json()
         match = solver.update(feedback)
-        cnt += 1
         if match:
             print(f'The today answer is {response} with {cnt} Guess')
             break

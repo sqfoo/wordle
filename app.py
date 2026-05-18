@@ -1,5 +1,5 @@
-import argparse
-import json, re
+import argparse, requests
+import json, re, time
 
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -100,44 +100,58 @@ if __name__ == "__main__":
     tgt = args.tgt.lower()
 
     Feedback = "This is the first guess"
-    for attempt in range(1, 1+MAX_RETRIES):
-        try:
-            message = [
-                SystemMessage(content=SYS_PROMPT),
-                HumanMessage(content=HUMAN_MSG.format(i=i, Feedback=Feedback))
-            ]
-            response = llm.invoke(message)
-            resp = response.content
-            # print(extract_json_answer(resp))
-            print(extract_last_json(resp))
+    for cnt in range(1, 1+6):
+        # LLM guesses word here
+        response = None
+        for attempt in range(1, 1+MAX_RETRIES):
+            try:
+                message = [
+                    SystemMessage(content=SYS_PROMPT),
+                    HumanMessage(content=HUMAN_MSG.format(i=i, Feedback=Feedback))
+                ]
+                response = llm.invoke(message)
+                resp = response.content
+                response = extract_last_json(resp)
+                break
+            except Exception as e:
+                wait = 2 ** attempt
+                print(f'Error: {e}, retrying in {wait}s')
+                time.sleep(wait)
+
+        if response is None:
+            raise RuntimeError(f'LLM failed to be called or guess the word, please refer to the error logging')
+
+        # Corresponds to send the guessed word to the SERVER, and receive the FEEDBACK
+        success = False
+        for attempt in range(1, 1+MAX_RETRIES):
+            try:
+                if mode == 'specific':
+                    resp = requests.get(MODE[mode].format(tgt, response), timeout=30)
+                elif mode == 'random':
+                    resp = requests.get(MODE[mode].format(response, args.random_seed), timeout=30)
+                else:
+                    resp = requests.get(MODE[mode].format(response), timeout=30)
+
+                if resp.status_code == 200: # Success
+                    success = True
+                    break
+                
+                wait = 2 ** attempt
+                print(f"HTTP {resp.status_code}, retrying in {wait}s")
+                time.sleep(wait)
+            
+            except requests.RequestException as e:
+                wait = 2 ** attempt
+                print(f'Error: {e}, retrying in {wait}s')
+                time.sleep(wait)
         
-        except Exception as e:
-            pass
-
-
-    for i in range(1, 1+6):
-        if i == 1:
-            Feedback = "This is the first guess"
-        else:
-            success = False
-            for attempt in range(1, 1+MAX_RETRIES):
-                pass
-            comment = []
-
-            for i in range(5):
-                res = input("Feedback: ")
-                res = json.loads(res)
-                comment.append(res)
-            result = memory.update(comment)
-            if result:
-                break 
-            Feedback = memory.pretty_print()
+        if not success:
+            raise RuntimeError("Failed after retries")
         
-        print(Feedback)
-        
-
-
-        response = llm.invoke(message)
-        resp = response.content
-        # print(extract_json_answer(resp))
-        print(extract_last_json(resp))
+        # Process the FEEDBACK to JSON format for the next guess
+        feedback = resp.json()
+        result = memory.update(feedback)
+        if result:
+            print(f'The today answer is {response} with {cnt} Guess')
+            break
+        feedback = memory.pretty_print()
