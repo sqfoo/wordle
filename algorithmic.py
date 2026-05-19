@@ -3,21 +3,15 @@ import argparse
 import requests
 
 from core.solver import Solver
-
-MODE = {
-    'daily': 'https://wordle.votee.dev:8000/daily?guess={}&size=5',
-    'random': 'https://wordle.votee.dev:8000/random?guess={}&size=5&seed={}',
-    'specific': 'https://wordle.votee.dev:8000/word/{}?guess={}',
-}
-
-MAX_RETRIES = 5
+from core.settings import MODE, MAX_RETRIES
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-m', '--mode', type=str, default='random', help='Wordle Playing Mode, currently supports "daily", "random", "specific" ')
     parser.add_argument('--tgt', type=str, default='adieu', help='Targeted word to guess for Specific Mode')
     parser.add_argument('--random_seed', type=int, default=42, help='Random Seed for Random Mode')
-    parser.add_argument('--filename', type=str, default='words.txt', help='All Candidates word')
+    parser.add_argument('--filename', type=str, default='./data/words.txt', help='All Candidates word')
+    parser.add_argument('--min_max_filter', action='store_true', help="Enable min_max_bounding filtering rule or not, Feel free to enable if for proper wordle game")
     args = parser.parse_args()
     
     mode = args.mode.lower()
@@ -27,7 +21,7 @@ if __name__ == "__main__":
         assert len(args.tgt)==5 and args.tgt.lower() in candidates, f'Please specify a valid string from the attached {args.filename}'
         
 
-    solver = Solver(args.filename)
+    solver = Solver(args.filename, min_max_filter=args.min_max_filter)
     tgt = args.tgt.lower()
     
     for cnt in range(1, 1+6):

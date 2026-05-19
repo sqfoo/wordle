@@ -17,7 +17,7 @@ HUGGINGFACE = {
 GEMINI = {
     "type": "gemini",
     "param": {
-        "model": "gemini-2.5-flash",
+        "model": "gemini-2.5-flash-lite",
         "max_tokens": 512,
     }
 }

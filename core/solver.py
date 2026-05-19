@@ -2,12 +2,13 @@ from typing import List
 from collections import Counter, defaultdict
 
 class Solver:
-    def __init__(self, filename: str):
+    def __init__(self, filename: str, min_max_filter: bool = True):
         # Constant
         self.word_length = 5
         self.max_triedout = 6
         self.filename = filename
         self.init_guess = 'slate'
+        self.min_max_filter = min_max_filter
         self.reset()
     
     def reset(self):
@@ -20,7 +21,7 @@ class Solver:
         self.word_bank = data
         self.present_pos = defaultdict(set)
         self.min_counts = defaultdict(int)
-
+        self.max_counts = defaultdict(int)
 
     def guess(self) -> str:
         if self.cnt == 0:
@@ -34,32 +35,37 @@ class Solver:
     def update(self, response: List[dict]) -> bool:
         present_letters = set()
         absent_letters = set()
-        guess_counter = defaultdict(int)
+        present_counter = defaultdict(int)
+        gray_counter = defaultdict(int)
         
         solved = True
         for feedback in response:
-            i, c, result = feedback["slot"], feedback["guess"], feedback["result"]
+            i, c, result = int(feedback["slot"]), feedback["guess"], feedback["result"]
             if result == 'absent':
                 absent_letters.add(c)
+                gray_counter[c] += 1
             elif result == 'present':
                 present_letters.add(c)
                 self.present_pos[i].add(c)
                 self.must_have.add(c)
-                guess_counter[c] += 1
+                present_counter[c] += 1
             else:
                 self.correct[i] = c
                 present_letters.add(c)
                 self.must_have.add(c)
-                guess_counter[c] += 1
+                present_counter[c] += 1
             
             solved = solved and result == 'correct'
         
-        for c, cnt in guess_counter.items():
-            self.min_counts[c] = max(self.min_counts[c], cnt)
+        for c in set(present_counter) | set(gray_counter):
+            present, absent = present_counter[c], gray_counter[c]
+            if present > 0:
+                self.min_counts[c] = max(self.min_counts[c], present)
+            if absent > 0 and present > 0:
+                self.max_counts[c] = present
 
         self.invalid.update(absent_letters - present_letters)
         self.filter()
-
         print(f'Current Format that guessed correctly: {''.join(self.correct)} and there are {len(self.word_bank)} candidates remaining')
         return solved
 
@@ -87,13 +93,17 @@ class Solver:
             if bad:
                 continue
             
-            # --- Rule 5: Handle Duplicate Upper & Lower Bounds ---
-            # This handles the duplicate letter edge case. We count letter distributions
-            # only for words that survived structural positioning tests.
-            word_counts = Counter(word)
-            # Check lower bounds (e.g., if we found two 'R's, the word must have >= 2 'R's)
-            if any(word_counts[char] < min_amt for char, min_amt in self.min_counts.items()):
-                continue
+            if self.min_max_filter:
+                # --- Rule 5: Handle Duplicate Upper & Lower Bounds ---
+                # This handles the duplicate letter edge case. We count letter distributions
+                # only for words that survived structural positioning tests.
+                word_counts = Counter(word)
+                # Check lower bounds (e.g., if we found two 'R's, the word must have >= 2 'R's)
+                if any(word_counts[char] < min_amt for char, min_amt in self.min_counts.items()):
+                    continue
+                
+                if any(self.max_counts[char] > 0 and word_counts[char] > max_amt for char, max_amt in self.max_counts.items()):
+                    continue
             
             remaining.append(word)
 

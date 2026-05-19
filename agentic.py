@@ -2,35 +2,12 @@ import json, time
 import argparse, requests
 
 from dotenv import load_dotenv
-load_dotenv(dotenv_path="../.env")
+load_dotenv(dotenv_path="../langchain/.env")
 
 from core.llm import HUGGINGFACE, GEMINI
 from core.agent import Agent
-from core.tools import update_candidate, find_the_best_guess, empty_space
-
-MODE = {
-    'daily': 'https://wordle.votee.dev:8000/daily?guess={}&size=5',
-    'random': 'https://wordle.votee.dev:8000/random?guess={}&size=5&seed={}',
-    'specific': 'https://wordle.votee.dev:8000/word/{}?guess={}',
-}
-
-MAX_RETRIES = 5
-
-SYS_PROMPT = """
-You are an expert Wordle solver bot. Analyze the user's input and strictly follow this sequence:
-
-1. CHECK FOR NEW GAME: If the input is empty, "[]", or indicates a brand new game, SKIP step 2. Call the 'find_the_best_guess' tool immediately to select an optimal opening word (like 'crane' or 'slate'), and return that as your final JSON response.
-
-2. ONGOING GAME SEQUENCE: If there is historical feedback present:
-   - First, you MUST call the 'update_candidate' tool with the feedback. Stop and wait for the tool output.
-   - If 'update_candidate' returns True, the game is solved! Call 'empty_space' and return {"FINAL ANSWER": true}.
-   - If 'update_candidate' returns False, call 'find_the_best_guess' to find the next best word based on the new pool.
-   - If 'find_the_best_guess' returns None, retry it
-
-Always wrap your final answer in the exact JSON format: {"FINAL ANSWER": "YOUR WORD"}
-"""
-
-
+from core.prompts import AGENT_PROMPT
+from core.settings import MODE, MAX_RETRIES
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -39,13 +16,14 @@ if __name__ == "__main__":
     parser.add_argument('--random_seed', type=int, default=42, help='Random Seed for Random Mode')
     parser.add_argument('--filename', type=str, default='words.txt', help='All Candidates word')
     parser.add_argument('--llm_config', type=str, default="HUGGINGFACE", help="LLM config to setup the llm, specify either HUGGINGFACE or GEMINI")
+    parser.add_argument('--min_max_filter', action='store_true', help="Enable min_max_bounding filtering rule or not, Feel free to enable if for proper wordle game")
     args = parser.parse_args()
 
-    llm_config = globals(args.llm_config)
+    llm_config = globals()[args.llm_config]
     agent = Agent(
         llm_config=llm_config, 
-        tools=[update_candidate, find_the_best_guess, empty_space], 
-        sys_prompt=SYS_PROMPT
+        sys_prompt=AGENT_PROMPT,
+        min_max_filter=args.min_max_filter
     )
     agent.visualize()
 
@@ -61,6 +39,8 @@ if __name__ == "__main__":
     for cnt in range(1, 1+6):
         # Agent guesses the word
         success = False
+        feedback = json.dumps(feedback)
+
         for attempt in range(1, 1 + MAX_RETRIES):
             try:
                 final_answer = agent(feedback)
@@ -107,4 +87,5 @@ if __name__ == "__main__":
             raise RuntimeError("Failed after retries")
 
         # Process the FEEDBACK to JSON format, and Update the Candidate Pool
-        feedback = resp.json()
+        feedback = resp.json() # list
+        time.sleep(20)

@@ -1,13 +1,15 @@
 import re, json, time
-from typing import List
+from typing import List, TypedDict, Annotated
 
 from langgraph.graph import END, MessagesState, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 from langgraph.checkpoint.memory import MemorySaver
-from langchain_core.messages import SystemMessage
+from langchain_core.messages import AnyMessage, SystemMessage
+from langgraph.graph.message import add_messages
 
 from core.llm import setup_llm
-
+from core.solver import Solver
+from core.tools import build_tools
 
 # Settings for Exponential Retry
 MAX_RETRIES = 5
@@ -15,15 +17,19 @@ BASE_WAIT = 10
 
 
 class Agent:
-    def __init__(self, llm_config: dict, tools, sys_prompt: str):
+    def __init__(self, llm_config: dict, sys_prompt: str, min_max_filter: bool = True):
         self.llm = setup_llm(llm_config)
         
+        solver = Solver('./data/words.txt')
+        tools = build_tools(solver=solver)
         self.tools = ToolNode(tools)
         self.llm_with_tools = self.llm.bind_tools(tools)
         self.system_prompt = sys_prompt
 
-        print('Building the agent')
+        print('Building the agent ... ...')
         self.graph = self.build_graph()
+
+        self.solver = Solver('./data/words.txt', min_max_filter=min_max_filter)
 
     def assistant(self, state: MessagesState): # -> Call models
         sys_msg = SystemMessage(content=self.system_prompt)
@@ -83,7 +89,9 @@ class Agent:
     
     def __call__(self, human_message: List[dict]) -> str:
         # Formulate the payload exactly how your StateGraph expects it
-        payload = {"messages": [{"role": "user", "content": human_message}]}
+        payload = {
+            "messages": [{"role": "user", "content": human_message}]
+        }
 
         for attempt in range(MAX_RETRIES):
             try:
@@ -106,3 +114,9 @@ class Agent:
                 else:
                     return f"Error processing query after {MAX_RETRIES} attempts: {str(e)}"
             
+
+    def update(self, feedback: List[dict]) -> bool:
+        success = True
+        for f in feedback:
+            success = success and f.get("result", None) == "correct"
+        return success
