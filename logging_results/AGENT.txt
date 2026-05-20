@@ -1,0 +1,98 @@
+Setting up the LLM ... ...
+Building the agent ... ...
+Visualise the agent workflow and saved it in workflow.png
+Round 1: apple
+Attempt: 1 to free up the moemory for the next game.
+Attempt: 1 to find the best word.
+Agent guessed slate
+Attempt: 1 to update candidates. Feedback length: 5.
+Current Format that guessed correctly: ____e and there are 63 candidates remaining
+Attempt: 1 to find the best word.
+Agent guessed calle
+Attempt: 1 to update candidates. Feedback length: 5.
+Current Format that guessed correctly: ___le and there are 17 candidates remaining
+Attempt: 1 to find the best word.
+Agent guessed anole
+Attempt: 1 to update candidates. Feedback length: 5.
+Current Format that guessed correctly: a__le and there are 9 candidates remaining
+Attempt: 1 to find the best word.
+Agent guessed ample
+Attempt: 1 to update candidates. Feedback length: 5.
+Current Format that guessed correctly: a_ple and there are 1 candidates remaining
+Attempt: 1 to find the best word.
+Attempt: 1 to update candidates. Feedback length: 5.
+Current Format that guessed correctly: a_ple and there are 0 candidates remaining
+Agent guessed apple
+AGENT guessed apple correctly within 5 turns
+------------------------------------------------------------
+Round 2: allot
+Attempt: 1 to free up the moemory for the next game.
+Attempt: 1 to find the best word.
+Attempt: 1 to find the best word.
+Agent guessed slate
+Attempt: 1 to update candidates. Feedback length: 5.
+Attempt: 1 to find the best word.
+Current Format that guessed correctly: _l___ and there are 9 candidates remaining
+Agent guessed ploat
+Error: (ReadTimeoutError("HTTPSConnectionPool(host='router.huggingface.co', port=443): Read timed out. (read timeout=120)"), '(Request ID: d83767fe-cab3-4f5f-9d49-40d7799da1c0)')
+Attempt 1 failed. Retrying in 10 seconds...
+Attempt: 1 to update candidates. Feedback length: 5.
+Current Format that guessed correctly: _l__t and there are 1 candidates remaining
+Attempt: 1 to find the best word.
+Agent guessed allot
+AGENT guessed allot correctly within 3 turns
+------------------------------------------------------------
+Round 3: sheep
+Attempt: 1 to free up the moemory for the next game.
+Attempt: 1 to find the best word.
+Attempt: 1 to find the best word.
+Attempt: 1 to find the best word.
+Attempt: 1 to find the best word.
+Attempt: 1 to find the best word.
+Attempt: 1 to find the best word.
+Failed to find the best word: list.remove(x): x not in list
+Waiting 5 seconds to retry...
+Failed to find the best word: list.remove(x): x not in list
+Waiting 5 seconds to retry...
+Attempt: 2 to find the best word.
+Attempt: 2 to find the best word.
+Agent guessed slate
+Attempt: 1 to update candidates. Feedback length: 5.
+Attempt: 1 to find the best word.
+Current Format that guessed correctly: s____ and there are 218 candidates remaining
+Agent guessed seres
+Attempt: 1 to update candidates. Feedback length: 5.
+Current Format that guessed correctly: s__e_ and there are 38 candidates remaining
+Attempt: 1 to find the best word.
+Agent guessed skeed
+Attempt: 1 to update candidates. Feedback length: 5.
+Current Format that guessed correctly: s_ee_ and there are 3 candidates remaining
+Attempt: 1 to find the best word.
+Agent guessed sheep
+AGENT guessed sheep correctly within 4 turns
+------------------------------------------------------------
+Round 4: geese
+Attempt: 1 to free up the moemory for the next game.
+Attempt: 1 to find the best word.
+Attempt: 1 to find the best word.
+Agent guessed slate
+Attempt: 1 to update candidates. Feedback length: 5.
+Attempt: 1 to find the best word.
+Current Format that guessed correctly: ____e and there are 103 candidates remaining
+Agent guessed posse
+Attempt: 1 to update candidates. Feedback length: 5.
+Current Format that guessed correctly: ___se and there are 29 candidates remaining
+Attempt: 1 to find the best word.
+Agent guessed merse
+Attempt: 1 to update candidates. Feedback length: 5.
+Current Format that guessed correctly: _e_se and there are 6 candidates remaining
+Attempt: 1 to find the best word.
+Agent guessed feese
+Attempt: 1 to update candidates. Feedback length: 5.
+Attempt: 1 to find the best word.
+Attempt: 1 to update candidates. Feedback length: 5.
+Attempt: 1 to find the best word.
+Current Format that guessed correctly: _eese and there are 1 candidates remaining
+Current Format that guessed correctly: _eese and there are 2 candidates remaining
+Agent guessed geese
+AGENT guessed geese correctly within 5 turns

@@ -1,9 +1,11 @@
-import json, time
-import argparse, requests
+import time
+import json
+import argparse
+import requests
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from dotenv import load_dotenv
-load_dotenv(dotenv_path="../.env")
+load_dotenv(dotenv_path=".env")
 
 from core.llm import HUGGINGFACE, GEMINI, setup_llm
 from core.agent import Agent
@@ -14,10 +16,11 @@ from core.utils import extract_last_json
 from core.settings import MODE, MAX_RETRIES
 
 def setup_approach(args):
-    mode = args.mode
-    mode = mode.upper()
-    if mode == 'AGENT':
-        llm_config = globals[args.llm_config]
+    approach = args.approach
+    approach = approach.upper()
+    
+    if approach == 'AGENT':
+        llm_config = globals()[args.llm_config]
         guesser = Agent(
             llm_config=llm_config,
             sys_prompt=AGENT_PROMPT,
@@ -25,8 +28,8 @@ def setup_approach(args):
         )
         guesser.visualize()
 
-    elif mode == 'LLM':
-        llm_config = globals[args.llm_config]
+    elif approach == 'LLM':
+        llm_config = globals()[args.llm_config]
         llm = setup_llm(llm_config)
         
         print('Setting up the Memory for recording the past guesses and their response')
@@ -34,14 +37,14 @@ def setup_approach(args):
         guesser = (llm, memory)
     else:
         print('Setting up the algorithmic approach ...')
-        guesser = Solver('../data/words.txt', min_max_filter=args.min_max_filter)
+        guesser = Solver('./data/words.txt', min_max_filter=args.min_max_filter)
     
     return guesser
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--filename', type=str, default='test.txt', help='All Candidates word')
+    parser.add_argument('--filename', type=str, default='./data/test.txt', help='All Candidates word')
     parser.add_argument('--approach', type=str, default='AGENT', help='Specify which mode to solve wordle, ie. ALGO, LLM, AGENT')
     parser.add_argument('--llm_config', type=str, default="HUGGINGFACE", help="LLM config to setup the llm, specify either HUGGINGFACE or GEMINI")
     parser.add_argument('--min_max_filter', type=bool, default=False, help="Enable min_max_bounding filtering rule or not, Feel free to enable if for proper wordle game")
@@ -68,6 +71,7 @@ if __name__ == "__main__":
         for cnt in range(1, 1+6):
             if approach == 'AGENT':
                 success = False
+                feedback = json.dumps(feedback) # Stringify the list
                 for attempt in range(1, 1 + MAX_RETRIES):
                     try:
                         final_answer = guesser(feedback)
@@ -81,7 +85,7 @@ if __name__ == "__main__":
                     raise RuntimeError(f'Failed to invoke the agent')
                 
                 if isinstance(final_answer, bool) and final_answer:
-                    print('We solved it with {cnt} Guess')
+                    print(f'We solved it with {cnt} Guess')
                     break
                 else:
                     print(f'Agent guessed {final_answer}')
@@ -146,7 +150,13 @@ if __name__ == "__main__":
                 print(f'{approach} guessed {final_answer} correctly within {cnt} turns')
                 break
             
-            time.sleep(10) # Avoid reach the rate limit
+            time.sleep(20) # Avoid reach the rate limit
     
-    score = correct / len(words)
-    print(f'The {approach} approach reaches the accuracy of {score:.3} \%')
+        print('-'*60)
+        if approach == 'ALGO':
+            guesser.reset()
+        elif approach == 'LLM':
+            guesser[1].reset()
+    
+    score = correct / len(words) * 100
+    print(f'The {approach} approach reaches the accuracy of {score:.3} %')

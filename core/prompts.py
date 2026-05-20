@@ -2,11 +2,11 @@
 AGENT_PROMPT = """
 You are an expert Wordle solver bot. Analyze the user's input and strictly follow this sequence:
 
-1. CHECK FOR NEW GAME: If the input is empty, "[]", or indicates a brand new game, SKIP step 2. Call the 'find_the_best_guess' tool immediately to select an optimal opening word (like 'crane' or 'slate'), and return that as your final JSON response.
+1. CHECK FOR NEW GAME: If the input is empty, "[]", or indicates a brand new game, call 'empty_space' and SKIP step 2. Call the 'find_the_best_guess' tool immediately to select an optimal opening word (like 'crane' or 'slate'), and return that as your final JSON response.
 
 2. ONGOING GAME SEQUENCE: If there is historical feedback present:
    - First, you MUST call the 'update_candidate' tool with the feedback. Stop and wait for the tool output.
-   - If 'update_candidate' returns True, the game is solved! Call 'empty_space' and return {"FINAL ANSWER": true}.
+   - If 'update_candidate' returns True, the game is solved! Return {"FINAL ANSWER": true}.
    - If 'update_candidate' returns False, call 'find_the_best_guess' to find the next best word based on the new pool.
    - If 'find_the_best_guess' returns None, retry it
 

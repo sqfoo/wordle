@@ -9,6 +9,9 @@ GUESSED_TEMPLATE = "Gueesed Words: {words}"
 class Memory:
     def __init__(self):
         self.word_length = 5
+        self.reset()
+    
+    def reset(self):
         self.invalid = set()
         self.correct = ['_'] * self.word_length
         self.must_have = set()

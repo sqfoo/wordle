@@ -1,0 +1,28 @@
+LLM Model: Hugging Face
+
+Setting up the LLM ... ...
+Setting up the Memory for recording the past guesses and their response
+Round 1: apple
+LLM guessed SLATE
+LLM guessed ablee
+LLM guessed lamee
+LLM guessed ablee
+LLM guessed laeve
+LLM guessed eagle
+------------------------------------------------------------
+Round 2: allot
+LLM guessed LAUGH
+LLM guessed label
+LLM guessed table
+LLM guessed tally
+LLM guessed table
+LLM guessed table
+------------------------------------------------------------
+Round 3: sheep
+LLM guessed MOVER
+LLM guessed voter
+LLM guessed lever
+LLM guessed laser
+LLM guessed sensu
+LLM guessed seder
+------------------------------------------------------------

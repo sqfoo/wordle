@@ -21,7 +21,7 @@ class Solver:
         self.word_bank = data
         self.present_pos = defaultdict(set)
         self.min_counts = defaultdict(int)
-        self.max_counts = defaultdict(int)
+        self.max_counts = defaultdict(lambda: float('inf'))
 
     def guess(self) -> str:
         if self.cnt == 0:
@@ -37,7 +37,7 @@ class Solver:
         absent_letters = set()
         present_counter = defaultdict(int)
         gray_counter = defaultdict(int)
-        
+
         solved = True
         for feedback in response:
             i, c, result = int(feedback["slot"]), feedback["guess"], feedback["result"]

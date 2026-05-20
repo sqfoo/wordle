@@ -1,11 +1,13 @@
 import json, time
 
 from dotenv import load_dotenv
-load_dotenv(dotenv_path="../langchain/.env")
+load_dotenv(dotenv_path=".env")
 
 from core.llm import HUGGINGFACE, GEMINI
 from core.agent import Agent
 from core.prompts import AGENT_PROMPT
+
+VALID_FEEDBACK = ["absent", "correct", "present"]
 
 if __name__ == "__main__":
     agent = Agent(
@@ -21,13 +23,18 @@ if __name__ == "__main__":
         for j in range(6):
             feedback = []
             if j != 0:
-                for i in range(5):
-                    resp = input('Feedback')
+                for i, c in enumerate(final_answer):
+                    resp = None
+                    while not isinstance(resp, str) or (isinstance(resp, str) and resp not in VALID_FEEDBACK):
+                        resp = input(f'Feedback for {c} on slot {i}(specify"absent"/"correct"/"present"): ')
+                    resp = {
+                        "slot": i,
+                        "guess": c,
+                        "result": resp
+                    }
                     feedback.append(json.loads(resp))
             
-            print(feedback, type(feedback))
             feedback = json.dumps(feedback)
-            print((feedback), type(feedback))
             final_answer = agent(feedback)
             
             if isinstance(final_answer, bool) and final_answer:

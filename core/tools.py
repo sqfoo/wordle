@@ -6,6 +6,7 @@ from langchain_core.tools import tool
 from core.solver import Solver
 
 MAX_RETRY = 5
+TIME_INTERVAL = 20
 
 class UpdateCandidateInput(BaseModel):
     feedback: List[Dict[str, Any]] = Field(
@@ -28,7 +29,7 @@ def build_tools(solver: Solver):
         completed = False
         for i in range(1, MAX_RETRY+1):
             try:
-                print(f"Attempting to update candidates. Feedback length: {len(feedback)}")
+                print(f"Attempt: {i} to update candidates. Feedback length: {len(feedback)}.")
                 completed = solver.update(feedback)
                 break
             except Exception as e:
@@ -39,6 +40,8 @@ def build_tools(solver: Solver):
                 else:
                     print("Max retries reached. Failed to update the candidate list.")
                     return False
+        
+        time.sleep(TIME_INTERVAL)
         return completed
 
     @tool
@@ -51,12 +54,12 @@ def build_tools(solver: Solver):
         Returns:
             str: the word to guess
         """
-
+        
         for i in range(1, MAX_RETRY+1):
             try:
-                print(f"Attempting to find the best word.")
+                print(f"Attempt: {i} to find the best word.")
                 word = solver.guess()
-                return word
+                break
             except Exception as e:
                 print(f"Failed to find the best word: {str(e)}")
                 if i < MAX_RETRY:
@@ -65,6 +68,8 @@ def build_tools(solver: Solver):
                 else:
                     print("Max retries reached. Failed to guess word.")
                     return ''
+        time.sleep(TIME_INTERVAL)
+        return word
 
     @tool
     def empty_space() -> bool:
@@ -77,11 +82,10 @@ def build_tools(solver: Solver):
             bool: succeed to free up space or not
         """
         
-        MAX_RETRY = 5
         success = False
         for i in range(1, MAX_RETRY+1):
             try:
-                print(f"Attempting to free up the moemory for the next game.")
+                print(f"Attempt: {i} to free up the moemory for the next game.")
                 solver.reset()
                 success = True
                 if success:
@@ -89,6 +93,7 @@ def build_tools(solver: Solver):
             except Exception as e:
                 print(f'Failed to empty memory and wait for {i*5} s to retry')
                 time.sleep(i*5)
+        time.sleep(TIME_INTERVAL)
         return success
     
     return [update_candidate, find_the_best_guess, empty_space]

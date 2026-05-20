@@ -2,7 +2,7 @@ import json, time
 import argparse, requests
 
 from dotenv import load_dotenv
-load_dotenv(dotenv_path="../langchain/.env")
+load_dotenv(dotenv_path=".env")
 
 from core.llm import HUGGINGFACE, GEMINI
 from core.agent import Agent
@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     mode = args.mode.lower()
     if mode == 'specific':
-        with open('words.txt', 'r') as f:
+        with open(args.filename, 'r') as f:
             candidates = f.read().split('\n')
         assert len(args.tgt)==5 and args.tgt.lower() in candidates, f'Please specify a valid string from the attached {args.filename}'
     

@@ -1,0 +1,240 @@
+Setting up the algorithmic approach ...
+Round 1: apple
+Heurestically guessed slate
+Current Format that guessed correctly: ____e and there are 63 candidates remaining
+Heurestically guessed calle
+Current Format that guessed correctly: ___le and there are 17 candidates remaining
+Heurestically guessed anole
+Current Format that guessed correctly: a__le and there are 9 candidates remaining
+Heurestically guessed ample
+Current Format that guessed correctly: a_ple and there are 1 candidates remaining
+Heurestically guessed apple
+Current Format that guessed correctly: apple and there are 0 candidates remaining
+ALGO guessed apple correctly within 5 turns
+------------------------------------------------------------
+Round 2: allot
+Heurestically guessed slate
+Current Format that guessed correctly: _l___ and there are 9 candidates remaining
+Heurestically guessed bloat
+Current Format that guessed correctly: _l__t and there are 1 candidates remaining
+Heurestically guessed allot
+Current Format that guessed correctly: allot and there are 0 candidates remaining
+ALGO guessed allot correctly within 3 turns
+------------------------------------------------------------
+Round 3: sheep
+Heurestically guessed slate
+Current Format that guessed correctly: s____ and there are 220 candidates remaining
+Heurestically guessed seres
+Current Format that guessed correctly: s__e_ and there are 38 candidates remaining
+Heurestically guessed skeed
+Current Format that guessed correctly: s_ee_ and there are 3 candidates remaining
+Heurestically guessed sheep
+Current Format that guessed correctly: sheep and there are 0 candidates remaining
+ALGO guessed sheep correctly within 4 turns
+------------------------------------------------------------
+Round 4: geese
+Heurestically guessed slate
+Current Format that guessed correctly: ____e and there are 103 candidates remaining
+Heurestically guessed posse
+Current Format that guessed correctly: ___se and there are 29 candidates remaining
+Heurestically guessed merse
+Current Format that guessed correctly: _e_se and there are 6 candidates remaining
+Heurestically guessed feese
+Current Format that guessed correctly: _eese and there are 2 candidates remaining
+Heurestically guessed geese
+Current Format that guessed correctly: geese and there are 0 candidates remaining
+ALGO guessed geese correctly within 5 turns
+------------------------------------------------------------
+Round 5: llama
+Heurestically guessed slate
+Current Format that guessed correctly: _la__ and there are 66 candidates remaining
+Heurestically guessed flank
+Current Format that guessed correctly: _la__ and there are 31 candidates remaining
+Heurestically guessed clary
+Current Format that guessed correctly: _la__ and there are 14 candidates remaining
+Heurestically guessed plaga
+Current Format that guessed correctly: _la_a and there are 3 candidates remaining
+Heurestically guessed llama
+Current Format that guessed correctly: llama and there are 0 candidates remaining
+ALGO guessed llama correctly within 5 turns
+------------------------------------------------------------
+Round 6: banal
+Heurestically guessed slate
+Current Format that guessed correctly: _____ and there are 399 candidates remaining
+Heurestically guessed halal
+Current Format that guessed correctly: _a_al and there are 19 candidates remaining
+Heurestically guessed kanal
+Current Format that guessed correctly: _anal and there are 3 candidates remaining
+Heurestically guessed banal
+Current Format that guessed correctly: banal and there are 0 candidates remaining
+ALGO guessed banal correctly within 4 turns
+------------------------------------------------------------
+Round 7: eerie
+Heurestically guessed slate
+Current Format that guessed correctly: ____e and there are 506 candidates remaining
+Heurestically guessed bonie
+Current Format that guessed correctly: ___ie and there are 25 candidates remaining
+Heurestically guessed dixie
+Current Format that guessed correctly: ___ie and there are 14 candidates remaining
+Heurestically guessed eerie
+Current Format that guessed correctly: eerie and there are 0 candidates remaining
+ALGO guessed eerie correctly within 4 turns
+------------------------------------------------------------
+Round 8: level
+Heurestically guessed slate
+Current Format that guessed correctly: _____ and there are 283 candidates remaining
+Heurestically guessed level
+Current Format that guessed correctly: level and there are 0 candidates remaining
+ALGO guessed level correctly within 2 turns
+------------------------------------------------------------
+Round 9: belle
+Heurestically guessed slate
+Current Format that guessed correctly: ____e and there are 139 candidates remaining
+Heurestically guessed molle
+Current Format that guessed correctly: __lle and there are 4 candidates remaining
+Heurestically guessed fille
+Current Format that guessed correctly: __lle and there are 1 candidates remaining
+Heurestically guessed belle
+Current Format that guessed correctly: belle and there are 0 candidates remaining
+ALGO guessed belle correctly within 4 turns
+------------------------------------------------------------
+Round 10: mamma
+Heurestically guessed slate
+Current Format that guessed correctly: _____ and there are 1101 candidates remaining
+Heurestically guessed maray
+Current Format that guessed correctly: ma___ and there are 33 candidates remaining
+Heurestically guessed mania
+Current Format that guessed correctly: ma__a and there are 8 candidates remaining
+Heurestically guessed macka
+Current Format that guessed correctly: ma__a and there are 5 candidates remaining
+Heurestically guessed mamma
+Current Format that guessed correctly: mamma and there are 0 candidates remaining
+ALGO guessed mamma correctly within 5 turns
+------------------------------------------------------------
+Round 11: radar
+Heurestically guessed slate
+Current Format that guessed correctly: _____ and there are 1101 candidates remaining
+Heurestically guessed maray
+Current Format that guessed correctly: _a_a_ and there are 10 candidates remaining
+Heurestically guessed nazar
+Current Format that guessed correctly: _a_ar and there are 2 candidates remaining
+Heurestically guessed kabar
+Current Format that guessed correctly: _a_ar and there are 1 candidates remaining
+Heurestically guessed radar
+Current Format that guessed correctly: radar and there are 0 candidates remaining
+ALGO guessed radar correctly within 5 turns
+------------------------------------------------------------
+Round 12: rotor
+Heurestically guessed slate
+Current Format that guessed correctly: _____ and there are 302 candidates remaining
+Heurestically guessed torot
+Current Format that guessed correctly: _o_o_ and there are 3 candidates remaining
+Heurestically guessed rotor
+Current Format that guessed correctly: rotor and there are 0 candidates remaining
+ALGO guessed rotor correctly within 3 turns
+------------------------------------------------------------
+Round 13: boost
+Heurestically guessed slate
+Current Format that guessed correctly: _____ and there are 183 candidates remaining
+Heurestically guessed truss
+Current Format that guessed correctly: ___s_ and there are 20 candidates remaining
+Heurestically guessed moist
+Current Format that guessed correctly: _o_st and there are 2 candidates remaining
+Heurestically guessed boost
+Current Format that guessed correctly: boost and there are 0 candidates remaining
+ALGO guessed boost correctly within 4 turns
+------------------------------------------------------------
+Round 14: bloom
+Heurestically guessed slate
+Current Format that guessed correctly: _l___ and there are 94 candidates remaining
+Heurestically guessed clonk
+Current Format that guessed correctly: _lo__ and there are 18 candidates remaining
+Heurestically guessed glowy
+Current Format that guessed correctly: _lo__ and there are 7 candidates remaining
+Heurestically guessed blood
+Current Format that guessed correctly: bloo_ and there are 2 candidates remaining
+Heurestically guessed bloom
+Current Format that guessed correctly: bloom and there are 0 candidates remaining
+ALGO guessed bloom correctly within 5 turns
+------------------------------------------------------------
+Round 15: civic
+Heurestically guessed slate
+Current Format that guessed correctly: _____ and there are 1059 candidates remaining
+Heurestically guessed moony
+Current Format that guessed correctly: _____ and there are 74 candidates remaining
+Heurestically guessed chick
+Current Format that guessed correctly: c____ and there are 5 candidates remaining
+Heurestically guessed civic
+Current Format that guessed correctly: civic and there are 0 candidates remaining
+ALGO guessed civic correctly within 4 turns
+------------------------------------------------------------
+Round 16: totem
+Heurestically guessed slate
+Current Format that guessed correctly: _____ and there are 299 candidates remaining
+Heurestically guessed tenet
+Current Format that guessed correctly: t__e_ and there are 44 candidates remaining
+Heurestically guessed toped
+Current Format that guessed correctly: to_e_ and there are 5 candidates remaining
+Heurestically guessed toter
+Current Format that guessed correctly: tote_ and there are 1 candidates remaining
+Heurestically guessed totem
+Current Format that guessed correctly: totem and there are 0 candidates remaining
+ALGO guessed totem correctly within 5 turns
+------------------------------------------------------------
+Round 17: queue
+Heurestically guessed slate
+Current Format that guessed correctly: ____e and there are 506 candidates remaining
+Heurestically guessed bonie
+Current Format that guessed correctly: ____e and there are 97 candidates remaining
+Heurestically guessed peeve
+Current Format that guessed correctly: __e_e and there are 14 candidates remaining
+Heurestically guessed creme
+Current Format that guessed correctly: __e_e and there are 1 candidates remaining
+Heurestically guessed queue
+Current Format that guessed correctly: queue and there are 0 candidates remaining
+ALGO guessed queue correctly within 5 turns
+------------------------------------------------------------
+Round 18: fuzzy
+Heurestically guessed slate
+Current Format that guessed correctly: _____ and there are 1059 candidates remaining
+Heurestically guessed moony
+Current Format that guessed correctly: ____y and there are 111 candidates remaining
+Heurestically guessed buddy
+Current Format that guessed correctly: _u__y and there are 29 candidates remaining
+Heurestically guessed furry
+Current Format that guessed correctly: fu__y and there are 3 candidates remaining
+Heurestically guessed fuffy
+Current Format that guessed correctly: fu__y and there are 2 candidates remaining
+Heurestically guessed fuggy
+Current Format that guessed correctly: fu__y and there are 1 candidates remaining
+------------------------------------------------------------
+Round 19: jazzy
+Heurestically guessed slate
+Current Format that guessed correctly: _____ and there are 1101 candidates remaining
+Heurestically guessed maray
+Current Format that guessed correctly: _a__y and there are 72 candidates remaining
+Heurestically guessed bandy
+Current Format that guessed correctly: _a__y and there are 20 candidates remaining
+Heurestically guessed packy
+Current Format that guessed correctly: _a__y and there are 5 candidates remaining
+Heurestically guessed faggy
+Current Format that guessed correctly: _a__y and there are 1 candidates remaining
+Heurestically guessed jazzy
+Current Format that guessed correctly: jazzy and there are 0 candidates remaining
+ALGO guessed jazzy correctly within 6 turns
+------------------------------------------------------------
+Round 20: puppy
+Heurestically guessed slate
+Current Format that guessed correctly: _____ and there are 1059 candidates remaining
+Heurestically guessed moony
+Current Format that guessed correctly: ____y and there are 111 candidates remaining
+Heurestically guessed buddy
+Current Format that guessed correctly: _u__y and there are 29 candidates remaining
+Heurestically guessed furry
+Current Format that guessed correctly: _u__y and there are 13 candidates remaining
+Heurestically guessed yuppy
+Current Format that guessed correctly: _uppy and there are 3 candidates remaining
+Heurestically guessed cuppy
+Current Format that guessed correctly: _uppy and there are 2 candidates remaining
+------------------------------------------------------------
+The ALGO approach reaches the accuracy of 90 %

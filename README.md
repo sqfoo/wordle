@@ -21,7 +21,7 @@ In cases of repeated letters:
 - A letter may appear as ```present``` or ```correct``` in one position
 - and ```absent``` in another position within the same guess.
 
-For example, the targeted word is ```"apple"``` while guess is ```"allee"```, the feedback would be
+For example, the secret word is ```"apple"``` while guess is ```"allee"```, the feedback would be
 
 ```
 a -> correct
@@ -31,9 +31,19 @@ e -> absent (as only one 'e' exists)
 e -> correct
 ```
 
-Therefore, the solver must track **letter frequency bound**, not just **presence/absence**.
+Therefore, the solver must track **letter frequency bound**, not just **presence/absence**. However, the environment provided by **Votee** does not support this. With the sample example, the feedback would be:
 
-## Approach
+```
+a -> correct
+l -> present
+l -> present
+e -> present
+e -> correct
+```
+
+instead.
+
+## Algorithmic Approach
 
 To do so, first we load a dictionary of valid five-letter english words from either ```words.txt``` as the initial candidates. To solve this **Wordle** problem efficiently, having a good first guess is important. Based on the provided [statistics](https://github.com/joshstephenson/Wordle-Solver), it shows that the frequency of ```"S"``` as the first letter is the highest, hence we always guess ```"slate"``` as the first word.
 
@@ -75,12 +85,12 @@ Letters marked as ```present``` or ```correct``` must appear at leat once.
 self.invalid = set()
 ```
 
-Letters that are confirmed absent agter accounting for duplicates.
+Letters that are confirmed absent after accounting for duplicates.
 
 
 ### Filter Out
 
-A word is a valid candidate if and only if it satisfies all contraints:
+A word is a valid candidate if and only if it satisfies all constraints:
 
 #### Rule 1: No invalid letters
 
@@ -120,7 +130,7 @@ if bad:
 
 For example, the targeted word is ```"apple"``` and we guess ```"state"``` this time, which indicates ```'s', 't'``` are ```absent```, ```'e'``` is ```correct``` and ```'a'``` is ```present```. Then, the following exmples corresponds to the cases above:
 
-- ```"smile"``` as ```"s"``` doees not exist in the targeted word
+- ```"smile"``` as ```"s"``` does not exist in the targeted word
 - ```"axiom"``` as it does not contain the corrected ```"e"``` in the correct position
 - ```"brown"``` as both presented ```"a", "e"``` do not exist
 - ```"plate"``` as ```"a"``` is located wrongly from the feedback
@@ -138,6 +148,60 @@ for w in self.word_bank:
 
 Then, we find the **best word** which satisfies that the letter on that position is the one which has the highest frequency.
 
+## LLM Approach
+
+Other than algorithmic approach to solve this, we also propose to use Large-Language Model to think and solve this with the prompt, ```LLM_PROMPT``` found in [core/prompts.py](core/prompts.py). Here, we use two different LLM: **Qwen2.5-14B-Instruct** and **gemini-2.5-flash-lite**.
+
+## Agentic Approach
+
+Here, we also propose an Agentic Approach, composed of a LLM and several tools to define the workflow: ```empty_space``` when starting a new game, ```update_candidate``` and ```find_the_best``` for every guessing turns. The whole workflow is designed as folling:
+
+```
+Start a new game, call empty_space function to empty the memory cache
+
+During every guessing turns, call update_candidate function, then find_the_best function, just like how the algorithmic approach does.
+```
+
+It is built with **LangChain** framework, and the workflow is shown:
+
+<p align="center">
+    <img src="workflow.png" alt="workflow" width="200"><br>
+    <b>Agentic Approach</n>
+</p>
+
+### Limitation
+
+- **Agent** might duplicate calling the function, but this could be resolved with indexing every function calling.
+
+## Evaluation
+
+To evaluate and compare the performance of these approaches, we have prepared the script ```eval.py``` along with the words in [data/test.txt](data/test.txt). Their performace is summarized in the table below:
+
+| Approach | Accuracy | Avg Guesses |
+| :---:   | :---: | :---: |
+| Algorithmic | 18/20 | 4.33 |
+| LLM (Qwen) | 0/3 | - |
+| LLM (Gemini) | 1/4 | 3 |
+| Agentic | 4/4 | 4 |
+
+Due to external API rate limits during development, large-scale evaluation of the **LLM** and **Agentic** approaches was constrained. To compensate, [detailed execution logs](logging_results) were recorded to demonstrate:
+
+- retry behavior,
+- tool orchestration,
+- iterative constraint updates,
+- and fault-tolerant execution under unstable provider conditions.
+
+The deterministic heuristic solver was evaluated more extensively since it does not depend on external inference APIs.
+
+Evaluation results showed that **Algorithmic** solver consistently outperformed the pure **LLM** approach in both accuracy and efficiency.
+
+The **Agentic** workflow improved consistency over direct LLM guessing by allowing the model to iteratively apply structured constraints through tools. However, it still incurred additional latency and orchestration overhead compared to the purely algorithmic baseline.
+
+This reflects a broader engineering tradeoff:
+
+- **Algorithmic** solver provide stronger correctness guarantees for constrained search problems,
+- while **LLM-based Agents** provide flexibility and extensibility at the cost of reliability and efficiency.
+
 ## Install the Libraries
 
 Install related packages:
@@ -148,18 +212,22 @@ pip install -r requirements.txt
 
 ## Run it
 
-There are three supported running modes: ```"daily", "random", "specific"``` in this program. Here are the following commands to run different modes:
+Set your API key for **Hugging Inference Port** and **Gemini** in ```.env```.
+
+There are three supported running modes: ```"daily", "random", "specific"``` in this program, you can specify it with the argument ```mode```. For running these three approaches mentioned above, you can run the following scripts:
 
 ```bash
-# Daily puzzle
-python main.py --mode daily
+# Daily puzzle with Algorithmic Approach
+python algorithmic.py --mode daily
 
-# Random puzzle
-python main.py --mode random --random_seed 42
+# Random puzzle with LLM Approach
+python llm_approach.py --mode random --random_seed 42
 
-# Specific target (for testing)
-python main.py --mode specific --tgt apple
+# Specific target (for testing) with Agentic Approach
+python agentic.py --mode specific --tgt apple
 ```
+
+An interactive script is also provided in ```agentic_interactive.py```, so far only supports **Agentic Approach** and requires the user to give the feedback on every guessed characters corresponding to their positions.
 
 Feel free to have a play on it.
 
@@ -170,6 +238,8 @@ We would like to thank these developers and credit their code.
 - **Votee** for providing the API and testing environment
 - [Josh Stephenson](https://github.com/joshstephenson/Wordle-Solver) for the provided statistics
 - [ChatGPT](https://chatgpt.com/share/69f860b3-80b4-83a5-bfe8-c117856d96b1) for the discussion about how to solve this problem
+- [LangChain](https://www.langchain.com) for providing the Agent Framework
+- [Google AI](https://aistudio.google.com/app/prompts/new_chat) and [Hugging Face](https://huggingface.co) for providing the inference port
 
 Notes:
 

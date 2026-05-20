@@ -1,11 +1,13 @@
-import re, json, time
+import re
+import json
+import time
+import uuid
 from typing import List, TypedDict, Annotated
 
 from langgraph.graph import END, MessagesState, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 from langgraph.checkpoint.memory import MemorySaver
-from langchain_core.messages import AnyMessage, SystemMessage
-from langgraph.graph.message import add_messages
+from langchain_core.messages import SystemMessage
 
 from core.llm import setup_llm
 from core.solver import Solver
@@ -20,16 +22,15 @@ class Agent:
     def __init__(self, llm_config: dict, sys_prompt: str, min_max_filter: bool = True):
         self.llm = setup_llm(llm_config)
         
-        solver = Solver('./data/words.txt')
+        solver = Solver('./data/words.txt', min_max_filter=min_max_filter)
         tools = build_tools(solver=solver)
         self.tools = ToolNode(tools)
         self.llm_with_tools = self.llm.bind_tools(tools)
         self.system_prompt = sys_prompt
+        self.thread_id = str(uuid.uuid4())
 
         print('Building the agent ... ...')
         self.graph = self.build_graph()
-
-        self.solver = Solver('./data/words.txt', min_max_filter=min_max_filter)
 
     def assistant(self, state: MessagesState): # -> Call models
         sys_msg = SystemMessage(content=self.system_prompt)
@@ -57,9 +58,7 @@ class Agent:
 
         # 3. Once tools finish, they route right back to the assistant to analyze results
         graph_builder.add_edge("tools", "assistant")
-
-        memory = MemorySaver()
-        graph = graph_builder.compile(checkpointer=memory)
+        graph = graph_builder.compile()
         return graph
     
     def visualize(self):
@@ -96,7 +95,7 @@ class Agent:
         for attempt in range(MAX_RETRIES):
             try:
                 # Invoke the graph
-                response = self.graph.invoke(payload, config={"configurable": {"thread_id": "abc123"}})
+                response = self.graph.invoke(payload, config={"configurable": {"thread_id": self.thread_id}})
                 
                 # Extract the text content safely from the final state messgae
                 final_message_content = response['messages'][-1].content
